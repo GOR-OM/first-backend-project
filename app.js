@@ -2,7 +2,7 @@ import express  from "express";
 import RouterUser from "./routes/user.js";
 export const app= express();
 import { config } from "dotenv";
-app.use(RouterUser)
+app.use("/user" ,RouterUser);
 const router = express.Router();
 
 config({
