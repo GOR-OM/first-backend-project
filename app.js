@@ -2,7 +2,7 @@ import express  from "express";
 import RouterUser from "./routes/user.js";
 export const app= express();
 import { config } from "dotenv";
-app.use("/user" ,RouterUser);
+
 const router = express.Router();
 
 config({
@@ -12,6 +12,10 @@ config({
 // using middleware
 
 app.use(express.json());
+
+
+//route json pachi use karva nu che 
+app.use("/api/v1/users" ,RouterUser);
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
