@@ -1,4 +1,5 @@
-import { Allusers, RegisterUser, Userbyid,login } from "../controllers/user.js";
+import { Allusers, RegisterUser, Userbyid,login, getMyProfile } from "../controllers/user.js";
+import { isAuth } from "../middleware/auth.js";
 import {User} from "../models/users.js";
 import express from "express";
 
@@ -10,7 +11,7 @@ router.get("/all", Allusers);
 
 router.post("/new", RegisterUser);
 router.post("/login", login);
-
+router.get("/me", isAuth ,  getMyProfile);
 
 
 

@@ -33,8 +33,6 @@ export const RegisterUser = async (req, res) => {
 export const login = async (req, res) => {
 
    const  {email,password} = req.body;
-   console.log(email,password);
-
    let user = await User.findOne({email}).select("+password");
     if(!user){
          res.status(404).json({
@@ -56,4 +54,12 @@ export const login = async (req, res) => {
 
 
     
+};
+
+export const getMyProfile =  (req, res) => {
+    
+    res.status(200).json({
+        success:true,
+        user : req.user ,
+    });
 };
