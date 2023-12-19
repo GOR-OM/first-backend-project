@@ -63,3 +63,12 @@ export const getMyProfile =  (req, res) => {
         user : req.user ,
     });
 };
+
+export const logout = (req, res) => {
+    res.status(200)
+    .clearCookie("token")
+    .json({
+        success:true,
+        message:"Logout successfully",
+    });
+};
