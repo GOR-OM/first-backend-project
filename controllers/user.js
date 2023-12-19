@@ -1,6 +1,7 @@
 import {User} from "../models/users.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendCookies } from "../utils/features.js";
 export const Allusers = async (req, res) => {
 
 };
@@ -23,22 +24,36 @@ export const RegisterUser = async (req, res) => {
         password: await bcrypt.hash(password, 10),
     });
     
-    const token = jwt.sign({_id: user._id},process.env.JWT_SECRET,);
-
-    res.status(201)
-            .cookie("token", token, {
-                httpOnly: true,
-                maxAge: 60 * 60 * 1000, // 1 hour
-            })
-            .json({
-                success: true,
-                message: "User created successfully",
-            });
+    sendCookies(res,user,201,"User created successfully");
     
 
 };
     
 
 export const login = async (req, res) => {
+
+   const  {email,password} = req.body;
+   console.log(email,password);
+
+   let user = await User.findOne({email}).select("+password");
+    if(!user){
+         res.status(404).json({
+            success:false,
+            message:"Invalid Emial or Password"
+        });
+    }
+
+    const isMatch = await bcrypt.compare(password,user.password);
+
+    if(!isMatch){
+        res.status(404).json({
+            success:false,
+            message:"Invalid Emial or Password"
+        });
+    }
+
+    sendCookies(res,user,200,`Wlcome ${user.name}`);
+
+
     
 };
