@@ -1,7 +1,7 @@
 import task from '../models/task.js';
 import Task from '../models/task.js';
-
-
+import ErrorHandler from '../middleware/error.js';
+import cors from 'cors';
 export const newTasks = async (req, res, next) => {
     const { title, description} = req.body;  
     const task = await Task.create({
@@ -54,12 +54,9 @@ export const deleteTask = async (req, res, next) => {
     const {id} = req.params;
     const tasks = await Task.findById(id);
     if(!tasks){
-        res.status(404)
-        .json({
-            success : false,
-            message : "task not found",
-        });
+       return next(new ErrorHandler(404, "task not found "));
     }
+    
     await tasks.deleteOne(); 
     res.status(200)
     .json({
